@@ -843,3 +843,5 @@ class QuestionPage(tk.Frame):
 if __name__ == "__main__":
    init_db()
    App().mainloop()
+
+#test
