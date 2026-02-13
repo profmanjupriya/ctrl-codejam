@@ -6,8 +6,6 @@ import time
 import sqlite3
 
 
-
-
 BG_COLOR = "#FF7F7F"
 TIME_PER_QUESTION = 30 * 60  # 10 minutes
 RUN_COOLDOWN = 3  # seconds
@@ -66,6 +64,7 @@ def init_db():
    conn.close()
 
 
+
 def register_user(username, password):
    try:
        conn = sqlite3.connect("users.db")
@@ -91,6 +90,15 @@ def check_login(username, password):
    result = cursor.fetchone()
    conn.close()
    return result is not None
+
+def get_all_usernames():
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT username FROM users ORDER BY username COLLATE NOCASE")
+    rows = cursor.fetchall()
+    conn.close()
+    return [r[0] for r in rows]
+
 
 
 # ---------- MAIN APP ----------
@@ -130,10 +138,14 @@ class App(tk.Tk):
        print("🧪 DEV: Admin timer started")
        GLOBAL_TIMER.start_exam()
 
-
    def show_login_page(self):
-       # If you're using the shell system:
        self.shell.set_page(LoginPage(self.shell.body))
+
+   def show_admin_page(self):
+       self.shell.set_page(AdminPage(self.shell.body))
+
+   def show_question_page(self):
+       self.shell.set_page(QuestionPage(self.shell.body))
 
 
 NAV_BG = "#20C6C6"   # turquoise
@@ -273,7 +285,7 @@ class HomePage(tk.Frame):
 
        tk.Label(
            header,
-           text="Main Page",
+           text="Code Blitz",
            bg=SHELL_BG,
            fg="white",
            font=("Arial", 40, "bold")
@@ -288,19 +300,21 @@ class HomePage(tk.Frame):
        tk.Label(sub, text="CTRL ", bg=SHELL_BG, fg="#B46CFF", font=("Arial", 18, "bold")).pack(side="left")
        tk.Label(sub, text="SDSU", bg=SHELL_BG, fg="#FF3B3B", font=("Arial", 18, "bold")).pack(side="left")
 
+       # --- Cards container (centered) ---
+       cards_wrapper = tk.Frame(self, bg=SHELL_BG)
+       cards_wrapper.pack(pady=(25, 0))
 
-       # --- Cards container (3 cards) ---
-       cards = tk.Frame(self, bg=SHELL_BG)
-       cards.pack(pady=(25, 0))
+       cards = tk.Frame(cards_wrapper, bg=SHELL_BG)
+       cards.pack()
 
+       # Force fixed spacing
+       for i in range(3):
+           cards.columnconfigure(i, weight=0)
 
-       cards.columnconfigure(0, weight=1)
-       cards.columnconfigure(1, weight=1)
-       cards.columnconfigure(2, weight=1)
-
-
-       self._make_card(cards, 0, "About the Hackathon", "TBD", "Learn More")
-       self._make_card(cards, 1, "Time and Location", "TBD", "Event Info")
+       self._make_card(cards, 0, "About the Code Blitz", "Join us for a high speed coding competetion\n"
+       "where groups of up to 3 will band together to fight \n"
+       "for the chance to win $450! The fastest, most accurate competitors will win it all", "Learn More")
+       self._make_card(cards, 1, "Time and Location", "Templo Mayor, March 21st \n 9am to 1pm", "Event Info")
        self._make_card(cards, 2, "Registration is Open", "Registration!", "Discord")
 
 
@@ -405,109 +419,70 @@ class CommitteePage(tk.Frame):
 
 # ---------- LOGIN PAGE ----------
 class LoginPage(tk.Frame):
-   def __init__(self, master):
-       super().__init__(master, bg=BG_COLOR)
+    def __init__(self, master):
+        super().__init__(master, bg=BG_COLOR)
 
+        container = tk.Frame(self, bg=BG_COLOR)
+        container.place(relx=0.5, rely=0.5, anchor="center")
 
-       # Center container
-       container = tk.Frame(self, bg=BG_COLOR)
-       container.place(relx=0.5, rely=0.5, anchor="center")
+        title = tk.Label(
+            container,
+            text="Welcome",
+            bg=BG_COLOR,
+            fg="white",
+            font=("Arial", 28, "bold")
+        )
+        title.pack(pady=(0, 20))
 
+        tk.Label(container, text="Username", bg=BG_COLOR, fg="white", font=("Arial", 16)).pack(anchor="w")
+        self.username = tk.Entry(container, font=("Arial", 16), width=20)
+        self.username.pack(pady=(0, 15))
 
-       title = tk.Label(
-           container,
-           text="Welcome",
-           bg=BG_COLOR,
-           fg="white",
-           font=("Arial", 28, "bold")
-       )
-       title.pack(pady=(0, 20))
+        tk.Label(container, text="Password", bg=BG_COLOR, fg="white", font=("Arial", 16)).pack(anchor="w")
+        self.password = tk.Entry(container, show="*", font=("Arial", 16), width=20)
+        self.password.pack(pady=(0, 25))
 
+        btn_frame = tk.Frame(container, bg=BG_COLOR)
+        btn_frame.pack()
 
-       tk.Label(
-           container,
-           text="Username",
-           bg=BG_COLOR,
-           fg="white",
-           font=("Arial", 16)
-       ).pack(anchor="w")
+        tk.Button(btn_frame, text="Login", font=("Arial", 14, "bold"), width=10, command=self.login)\
+            .pack(side="left", padx=10)
 
+        tk.Button(btn_frame, text="Register", font=("Arial", 14, "bold"), width=10, command=self.register)\
+            .pack(side="right", padx=10)
 
-       self.username = tk.Entry(container, font=("Arial", 16), width=20)
-       self.username.pack(pady=(0, 15))
+        self.msg = tk.Label(container, text="", bg=BG_COLOR, fg="yellow", font=("Arial", 14))
+        self.msg.pack(pady=15)
 
+    def _app(self):
+        # Always get the real App instance (root window), even when embedded in Shell frames
+        return self.winfo_toplevel()
 
-       tk.Label(
-           container,
-           text="Password",
-           bg=BG_COLOR,
-           fg="white",
-           font=("Arial", 16)
-       ).pack(anchor="w")
+    def login(self):
+        username = self.username.get().strip()
+        password = self.password.get()
 
+        app = self.winfo_toplevel()  # <-- important
 
-       self.password = tk.Entry(container, show="*", font=("Arial", 16), width=20)
-       self.password.pack(pady=(0, 25))
+        # 🔐 Hardcoded admin login
+        if username == "admin" and password == "code":
+            app.show_admin_page()
+            return
 
+        # 👤 Normal user login
+        if check_login(username, password):
+            app.show_question_page()
+        else:
+            self.msg.config(text="❌ Invalid login")
 
-       btn_frame = tk.Frame(container, bg=BG_COLOR)
-       btn_frame.pack()
+    def register(self):
+        username = self.username.get().strip()
+        password = self.password.get()
 
-
-       tk.Button(
-           btn_frame,
-           text="Login",
-           font=("Arial", 14, "bold"),
-           width=10,
-           command=self.login
-       ).pack(side="left", padx=10)
-
-
-       tk.Button(
-           btn_frame,
-           text="Register",
-           font=("Arial", 14, "bold"),
-           width=10,
-           command=self.register
-       ).pack(side="right", padx=10)
-
-
-       self.msg = tk.Label(
-           container,
-           text="",
-           bg=BG_COLOR,
-           fg="yellow",
-           font=("Arial", 14)
-       )
-       self.msg.pack(pady=15)
-
-
-   def login(self):
-       username = self.username.get()
-       password = self.password.get()
-
-
-       # 🔐 Hardcoded admin login
-       if username == "admin" and password == "code":
-           self.master.show_admin_page()
-           return
-
-
-       # 👤 Normal user login
-       if check_login(username, password):
-           self.master.show_question_page()
-       else:
-           self.msg.config(text="❌ Invalid login")
-
-
-
-
-   def register(self):
-       if register_user(self.username.get(), self.password.get()):
-           self.msg.config(text="✅ Registered! You can log in.")
-       else:
-           self.msg.config(text="⚠ Username already exists")
-
+        if register_user(username, password):
+            self.msg.config(text="✅ Registered! You can log in.")
+        else:
+            self.msg.config(text="⚠ Username already exists")
 
 
 
@@ -552,6 +527,10 @@ GLOBAL_TIMER = LocalTimerService(TIME_PER_QUESTION)
 
 
    # ------ admin page -------
+def start_exam():
+    GLOBAL_TIMER.start_exam()
+
+
 class AdminPage(tk.Frame):
    def __init__(self, master):
        super().__init__(master, bg=BG_COLOR)
@@ -575,7 +554,7 @@ class AdminPage(tk.Frame):
            text="Start Exam Timer",
            font=("Arial", 16, "bold"),
            width=18,
-           command=self.start_exam
+           command=start_exam
        ).pack(pady=10)
 
 
@@ -593,23 +572,64 @@ class AdminPage(tk.Frame):
        self.update_debug_timer()
 
 
-   def start_exam(self):
-       GLOBAL_TIMER.start_exam()
+       # ---------- Registered Users List ----------
+       users_section = tk.Frame(container, bg=BG_COLOR)
+       users_section.pack(pady=(10, 0), fill="x")
 
+       tk.Label(
+           users_section,
+           text="Registered Users",
+           bg=BG_COLOR,
+           fg="white",
+           font=("Arial", 16, "bold")
+       ).pack(anchor="w")
+
+       list_frame = tk.Frame(users_section, bg=BG_COLOR)
+       list_frame.pack(pady=8, fill="both", expand=True)
+
+       self.user_listbox = tk.Listbox(
+           list_frame,
+           font=("Arial", 12),
+           height=10,
+           width=30
+       )
+       self.user_listbox.pack(side="left", fill="both", expand=True)
+
+       scrollbar = tk.Scrollbar(list_frame, orient="vertical", command=self.user_listbox.yview)
+       scrollbar.pack(side="right", fill="y")
+       self.user_listbox.config(yscrollcommand=scrollbar.set)
+
+       tk.Button(
+           users_section,
+           text="Refresh Users",
+           font=("Arial", 12, "bold"),
+           command=self.refresh_users
+       ).pack(pady=(6, 0), anchor="w")
+
+       self.refresh_users()
+
+
+   def refresh_users(self):
+        self.user_listbox.delete(0, tk.END)
+        try:
+            for name in get_all_usernames():
+                self.user_listbox.insert(tk.END, name)
+        except Exception as e:
+            self.user_listbox.insert(tk.END, f"Error loading users: {e}")
+
+   def _app(self):
+       return self.winfo_toplevel()
 
    def update_debug_timer(self):
-       remaining = GLOBAL_TIMER.get_remaining()
+        remaining = GLOBAL_TIMER.get_remaining()
 
-
-       if remaining is None:
-           self.timer_label.config(text="⏱ Waiting to start")
-       else:
-           self.timer_label.config(
-               text=f"⏱ Remaining: {format_time(remaining)}"
-           )
-
-
-       self.after(1000, self.update_debug_timer)
+        if remaining is None:
+            self.timer_label.config(text="⏱ Waiting to start")
+        else:
+            self.timer_label.config(
+                text=f"⏱ Remaining: {format_time(remaining)}"
+            )
+        self.after(1000, self.update_debug_timer)
 
 
 
@@ -843,5 +863,3 @@ class QuestionPage(tk.Frame):
 if __name__ == "__main__":
    init_db()
    App().mainloop()
-
-#testing
