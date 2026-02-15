@@ -32,6 +32,8 @@ export default function QuestionScreen() {
     }
   };
 
+  //hi how are you
+
   const pollTimer = async () => {
     try {
       const res = await api.timer.status();
