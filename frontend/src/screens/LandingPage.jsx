@@ -211,18 +211,37 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Footer CTA */}
-        <section className="tech-section border-t border-tech-blue/20">
+        {/* Contact Us */}
+        <section id="contact" className="tech-section bg-tech-darker/50 border-t border-tech-blue/20">
           <div className="tech-container text-center">
-            <p className="text-gray-400 mb-6">Ready to compete?</p>
-            <a
-              href="https://docs.google.com/forms/d/1IBp4rhWKWIqCa-5zKK81LZjxX3E7skSA4rOa-oBn9Eo/edit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="tech-button inline-block"
-            >
-              Sign up
-            </a>
+            <h2 className="tech-subheading mb-8">Contact Us</h2>
+            <div className="flex justify-center gap-8">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2 text-tech-blue hover:text-tech-purple transition-colors duration-200"
+              >
+                <div className="text-4xl">📷</div>
+                <span className="text-sm font-semibold">Instagram</span>
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center gap-2 text-tech-blue hover:text-tech-purple transition-colors duration-200"
+              >
+                <div className="text-4xl">💼</div>
+                <span className="text-sm font-semibold">LinkedIn</span>
+              </a>
+              <a
+                href="mailto:contact@codeblitz.com"
+                className="flex flex-col items-center gap-2 text-tech-blue hover:text-tech-purple transition-colors duration-200"
+              >
+                <div className="text-4xl">✉️</div>
+                <span className="text-sm font-semibold">Email</span>
+              </a>
+            </div>
           </div>
         </section>
         </main>

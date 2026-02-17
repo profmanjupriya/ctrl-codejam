@@ -15,6 +15,7 @@ export default function Header() {
     { id: 'info', label: 'Info' },
     { id: 'committee', label: 'Committee' },
     { id: 'genai', label: 'Gen AI Policy' },
+    { id: 'contact', label: 'Contact Us' }
   ];
 
   return (
