@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const scrollTo = (id) => {
@@ -42,15 +42,15 @@ export default function Header() {
                 {label}
               </button>
             ))}
-            <Link to="/registration" className="tech-nav-link ml-2">
-              Registration
+            <Link to="/registration" className="tech-button ml-2">
+              Login
             </Link>
           </nav>
 
           {/* Mobile menu button */}
           <div className="flex items-center gap-2 md:hidden">
-            <Link to="/registration" className="tech-nav-link py-2">
-              Registration
+            <Link to="/registration" className="tech-button py-2">
+              Login
             </Link>
             <button
               type="button"
