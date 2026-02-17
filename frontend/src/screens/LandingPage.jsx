@@ -77,8 +77,11 @@ export default function LandingPage() {
               Hosted by <span className="text-tech-purple font-semibold">CTRL</span>{' '}
               <span className="text-tech-blue font-semibold">SDSU</span>
             </p>
-            <p className="text-white-400 max-w-2xl mx-auto mb-10">
+            <p className="text-white-400 max-w-2xl mx-auto mb-3">
               A high-speed coding competition where teams of up to 3 compete for $450 in prizes.
+            </p>
+            <p className="text-white-400 max-w-2xl mx-auto mb-10">
+              Sign Up from February 23rd - March 16th to compete!!
             </p>
             <a
               href="https://docs.google.com/forms/d/1IBp4rhWKWIqCa-5zKK81LZjxX3E7skSA4rOa-oBn9Eo/edit"
@@ -147,21 +150,98 @@ export default function LandingPage() {
               San Diego State University. Dedicated to fostering innovation and leadership in the
               tech community.
             </p>
-            <div className="tech-grid">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="tech-card text-center">
-                <div className="text-3xl mb-3">👤</div>
+                <div className="text-4xl mb-3">👤</div>
                 <h3 className="font-semibold text-tech-blue mb-1">Committee Chair</h3>
                 <p className="text-gray-300">Isabella King</p>
               </div>
               <div className="tech-card text-center">
-                <div className="text-3xl mb-3">👤</div>
+                <div className="text-4xl mb-3">👤</div>
                 <h3 className="font-semibold text-tech-blue mb-1">Committee Vice Chair</h3>
                 <p className="text-gray-300">Ella Lamie</p>
               </div>
               <div className="tech-card text-center">
-                <div className="text-3xl mb-3">👤</div>
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">CTRL President</h3>
+                <p className="text-gray-300">Justin Pelak</p>
+              </div>
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">CTRL Vice President</h3>
+                <p className="text-gray-300">Everett Richards</p>
+              </div>
+            </div>
+            <br>
+            </br>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Committee Chair</h3>
+                <p className="text-gray-300">Mathew Hernandez</p>
+              </div>
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Committee Vice Chair</h3>
+                <p className="text-gray-300">Shamikh Quazi</p>
+              </div>
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
                 <h3 className="font-semibold text-tech-blue mb-1">Faculty Advisor</h3>
-                <p className="text-gray-300">Manju Muralidharan</p>
+                <p className="text-gray-300">Aadi Bery</p>
+              </div>
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Faculty Advisor</h3>
+                <p className="text-gray-300">Matthew Long</p>
+              </div>
+            </div>
+            <br>
+            </br>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Website/Competition Layout</h3>
+                <p className="text-gray-300">Bricen Humphrey-Schaefer</p>
+              </div>
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Website/Competition Layout</h3>
+                <p className="text-gray-300">Kurt Lara-Rosales</p>
+              </div>
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Website/Competition Layout</h3>
+                <p className="text-gray-300">Robert Fuller</p>
+              </div>
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Faculty Advisor</h3>
+                <p className="text-gray-300">Patricia Alfonso</p>
+              </div>
+            </div>
+            <br>
+            </br>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Committee Chair</h3>
+                <p className="text-gray-300">Shelvy Millado</p>
+              </div>
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Committee Vice Chair</h3>
+                <p className="text-gray-300">Dhruv Ramgiri</p>
+              </div>
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Faculty Advisor</h3>
+                <p className="text-gray-300">Nitin Chatlani</p>
+              </div>
+              <div className="tech-card text-center">
+                <div className="text-4xl mb-3">👤</div>
+                <h3 className="font-semibold text-tech-blue mb-1">Faculty Advisor</h3>
+                <p className="text-gray-300"></p>
               </div>
             </div>
           </div>
@@ -174,39 +254,8 @@ export default function LandingPage() {
 
             <div className="mb-6">
               <div className="rounded-lg p-4 text-white bg-gradient-to-r from-tech-blue/10 to-tech-purple/10 border-2 border-tech-blue/30">
-                  <p className="font-semibold text-center">Use GenAI to accelerate your work, not replace it.</p>
+                  <p className="font-semibold text-center">No usage of AI is allowed in any form.</p>
                 </div>
-            </div>
-
-            <div className="tech-grid">
-              <div className="tech-card">
-                <h3 className="font-semibold text-tech-blue mb-3">What&apos;s Allowed:</h3>
-                <ul className="text-gray-300 list-disc pl-5 space-y-1">
-                  <li>Coding help (debugging, boilerplate, explanations)</li>
-                  <li>Design mockups (logos, UI, visuals)</li>
-                  <li>Brainstorming (ideas, starter text)</li>
-                  <li>Documentation support (README, slides, pitch)</li>
-                </ul>
-              </div>
-
-              <div className="tech-card">
-                <h3 className="font-semibold text-tech-blue mb-3">What&apos;s NOT Allowed:</h3>
-                <ul className="text-gray-300 list-disc pl-5 space-y-1">
-                  <li>Submitting end-to-end AI-generated projects</li>
-                  <li>Hiding AI usage or claiming AI&apos;s work as your own</li>
-                  <li>Feeding real student/private data into AI tools</li>
-                  <li>Training large AI models from scratch</li>
-                </ul>
-              </div>
-
-              <div className="tech-card">
-                <h3 className="font-semibold text-tech-blue mb-3">Expectations:</h3>
-                <ul className="text-gray-300 list-disc pl-5 space-y-1">
-                  <li>Judges will look at your process as much as your demo</li>
-                  <li>Be ready to explain what you built vs. what AI generated</li>
-                  <li>Bonus points for showing ethical and effective AI use</li>
-                </ul>
-              </div>
             </div>
           </div>
         </section>
