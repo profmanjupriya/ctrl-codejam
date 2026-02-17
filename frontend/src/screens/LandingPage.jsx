@@ -73,11 +73,11 @@ export default function LandingPage() {
         <section id="home" className="tech-section min-h-[80vh] flex items-center">
           <div className="tech-container text-center">
             <h1 className="tech-heading mb-4">Code Blitz</h1>
-            <p className="text-gray-300 text-lg md:text-xl mb-2">
+            <p className="text-white-300 text-lg md:text-xl mb-2">
               Hosted by <span className="text-tech-purple font-semibold">CTRL</span>{' '}
               <span className="text-tech-blue font-semibold">SDSU</span>
             </p>
-            <p className="text-gray-400 max-w-2xl mx-auto mb-10">
+            <p className="text-white-400 max-w-2xl mx-auto mb-10">
               A high-speed coding competition where teams of up to 3 compete for $450 in prizes.
             </p>
             <a
@@ -103,7 +103,7 @@ export default function LandingPage() {
         <section id="about" className="tech-section bg-tech-darker/50">
           <div className="tech-container text-center">
             <h2 className="tech-subheading mb-8">About Code Blitz</h2>
-            <p className="text-gray-300 text-lg max-w-3xl ml-auto mr-auto">
+            <p className="text-white-300 text-lg max-w-3xl ml-auto mr-auto">
               Join us for a high-speed coding competition where groups of up to 3 will band together
               to fight for the chance to win $450! The fastest, most accurate competitors will win
               it all. Brought to you by the Coalition of Tech Representatives and Leadership (CTRL)
@@ -115,34 +115,34 @@ export default function LandingPage() {
         </section>
 
         {/* Info - Time & Location */}
-        <section id="info" className="tech-section">
+        <section id="info" className="tech-section bg-tech-darker/50">
           <div className="tech-container">
-            <h2 className="tech-subheading mb-8">Time & Location</h2>
+            <h2 className="tech-subheading mb-8 text-center">Time & Location</h2>
             <div className="tech-grid">
               <div className="tech-card">
-                <div className="text-3xl mb-3">📍</div>
-                <h3 className="font-semibold text-tech-blue mb-2">Venue</h3>
-                <p className="text-gray-300">Templo Mayor</p>
+                <div className="text-3xl mb-3 text-center">📍</div>
+                <h3 className="font-semibold text-tech-blue mb-2 text-center">Venue</h3>
+                <p className="text-gray-300 text-center">Templo Mayor</p>
               </div>
               <div className="tech-card">
-                <div className="text-3xl mb-3">📅</div>
-                <h3 className="font-semibold text-tech-blue mb-2">Date</h3>
-                <p className="text-gray-300">March 21st</p>
+                <div className="text-3xl mb-3 text-center">📅</div>
+                <h3 className="font-semibold text-tech-blue mb-2 text-center">Date</h3>
+                <p className="text-gray-300 text-center">March 21st</p>
               </div>
               <div className="tech-card">
-                <div className="text-3xl mb-3">🕐</div>
-                <h3 className="font-semibold text-tech-blue mb-2">Time</h3>
-                <p className="text-gray-300">9am – 1pm</p>
+                <div className="text-3xl mb-3 text-center">🕐</div>
+                <h3 className="font-semibold text-tech-blue mb-2 text-center">Time</h3>
+                <p className="text-gray-300 text-center">9am – 1pm</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Committee */}
-        <section id="committee" className="tech-section">
+        <section id="committee" className="tech-section bg-tech-darker/50">
           <div className="tech-container">
-            <h2 className="tech-subheading mb-8">Committee</h2>
-            <p className="text-gray-400 max-w-2xl mb-10">
+            <h2 className="tech-subheading mb-8 text-center">Committee</h2>
+            <p className="text-white-400 max-w-2xl mb-10 text-center mx-auto">
               Code Blitz is organized by CTRL — Coalition of Tech Representatives and Leadership at
               San Diego State University. Dedicated to fostering innovation and leadership in the
               tech community.
@@ -170,7 +170,7 @@ export default function LandingPage() {
         {/* Generative AI Policy */}
         <section id="genai" className="tech-section bg-tech-darker/50">
           <div className="tech-container">
-            <h2 className="tech-heading text-tech-blue mb-6">Generative AI Policy</h2>
+            <h2 className="tech-subheading mb-8 text-center">Generative AI Policy</h2>
 
             <div className="mb-6">
               <div className="rounded-lg p-4 text-white bg-gradient-to-r from-tech-blue/10 to-tech-purple/10 border-2 border-tech-blue/30">
