@@ -109,4 +109,3 @@ A speed coding competition app: **Flask** backend and **React** (Vite) frontend.
 - **Registration (login) page** — Students log in with credentials given by admin. Admin logs in with `admin` / `code`.
 - **Admin** — Start exam timer, add/delete users, clear users (except admin).
 - **Question (student)** — Wait for admin to start the timer; code in the editor, run, earn points; quiz ends when time is up or all questions are done.
-
