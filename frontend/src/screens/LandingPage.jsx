@@ -150,100 +150,109 @@ export default function LandingPage() {
               San Diego State University. Dedicated to fostering innovation and leadership in the
               tech community.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
               <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Committee Chair</h3>
-                <p className="text-gray-300">Isabella King</p>
+                <h3 className="font-semibold text-tech-blue mb-1">Isabella King</h3>
+                <p className="text-gray-300">Committee Chair</p>
+                <div className="text-4xl mt-3">👤</div>
               </div>
               <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Committee Vice Chair</h3>
-                <p className="text-gray-300">Ella Lamie</p>
+                <h3 className="font-semibold text-tech-blue mb-1">Ella Lamie</h3>
+                <p className="text-gray-300">Committee Vice Chair</p>
+                <div className="text-4xl mt-3">👤</div>
               </div>
               <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">CTRL President</h3>
-                <p className="text-gray-300">Justin Pelak</p>
+                <h3 className="font-semibold text-tech-blue mb-1">Justin Pelak</h3>
+                <p className="text-gray-300">CTRL President</p>
+                <div className="text-4xl mt-3">👤</div>
               </div>
               <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">CTRL Vice President</h3>
-                <p className="text-gray-300">Everett Richards</p>
-              </div>
-            </div>
-            <br>
-            </br>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Committee Chair</h3>
-                <p className="text-gray-300">Mathew Hernandez</p>
+                <h3 className="font-semibold text-tech-blue mb-1">Everett Richards</h3>
+                <p className="text-gray-300">CTRL Vice President</p>
+                <div className="text-4xl mt-3">👤</div>
               </div>
               <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Committee Vice Chair</h3>
-                <p className="text-gray-300">Shamikh Quazi</p>
-              </div>
-              <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Faculty Advisor</h3>
-                <p className="text-gray-300">Aadi Bery</p>
-              </div>
-              <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Faculty Advisor</h3>
-                <p className="text-gray-300">Matthew Long</p>
+                <h3 className="font-semibold text-tech-blue mb-1">Manju Muralidharan Priya</h3>
+                <p className="text-gray-300">Faculty Advisor</p>
+                <img src="/Manju.png" alt="Manju Muralidharan Priya" className="mt-3 w-full h-45 object-cover rounded" />
               </div>
             </div>
-            <br>
-            </br>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <br></br>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
               <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Website/Competition Layout</h3>
-                <p className="text-gray-300">Bricen Humphrey-Schaefer</p>
+                <h3 className="font-semibold text-tech-blue mb-1">Aadi Bery</h3>
+                <p className="text-gray-300">Event Logistics, Industry Outreach</p>
+                <img src="/ABeryHeadshot.jpg" alt="Aadi Bery" className="mt-3 w-50 h-50 object-cover rounded" />
               </div>
               <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Website/Competition Layout</h3>
-                <p className="text-gray-300">Kurt Lara-Rosales</p>
+                <h3 className="font-semibold text-tech-blue mb-1">Brandon Garate</h3>
+                <p className="text-gray-300">Industry Outreach, Marketing</p>
+                <div className="text-4xl mt-3">👤</div>
               </div>
               <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Website/Competition Layout</h3>
-                <p className="text-gray-300">Robert Fuller</p>
+                <h3 className="font-semibold text-tech-blue mb-1">Bricen Humphrey-Schaefer</h3>
+                <p className="text-gray-300">Competition Layout, Website</p>
+                <div className="text-4xl mt-3">👤</div>
               </div>
               <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Faculty Advisor</h3>
-                <p className="text-gray-300">Patricia Alfonso</p>
-              </div>
-            </div>
-            <br>
-            </br>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Committee Chair</h3>
-                <p className="text-gray-300">Shelvy Millado</p>
+                <h3 className="font-semibold text-tech-blue mb-1">Dhruv Ramgiri</h3>
+                <p className="text-gray-300">Finances</p>
+                <div className="text-4xl mt-3">👤</div>
               </div>
               <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Committee Vice Chair</h3>
-                <p className="text-gray-300">Dhruv Ramgiri</p>
-              </div>
-              <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Faculty Advisor</h3>
-                <p className="text-gray-300">Nitin Chatlani</p>
-              </div>
-              <div className="tech-card text-center">
-                <div className="text-4xl mb-3">👤</div>
-                <h3 className="font-semibold text-tech-blue mb-1">Faculty Advisor</h3>
-                <p className="text-gray-300"></p>
+                <h3 className="font-semibold text-tech-blue mb-1">Jose Hernandez Sanchez</h3>
+                <p className="text-gray-300">Helper</p>
+                <div className="text-4xl mt-3">👤</div>
               </div>
             </div>
+            <br></br>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+              <div className="tech-card text-center">
+                <h3 className="font-semibold text-tech-blue mb-1">Kurt Lara-Rosales</h3>
+                <p className="text-gray-300">Competition Layout, Website</p>
+                <div className="text-4xl mt-3">👤</div>
+              </div>
+              <div className="tech-card text-center">
+                <h3 className="font-semibold text-tech-blue mb-1">Mathew Hernandez</h3>
+                <p className="text-gray-300">Emailer, Secretary</p>
+                <div className="text-4xl mt-3">👤</div>
+              </div>
+              <div className="tech-card text-center">
+                <h3 className="font-semibold text-tech-blue mb-1">Matthew Long</h3>
+                <p className="text-gray-300">Competition Layout, Finances</p>
+                <div className="text-4xl mt-3">👤</div>
+              </div>
+              <div className="tech-card text-center">
+                <h3 className="font-semibold text-tech-blue mb-1">Nitin Chatlani</h3>
+                <p className="text-gray-300">Competition Layout, Industry Outreach</p>
+                <div className="text-4xl mt-3">👤</div>
+              </div>
+              <div className="tech-card text-center">
+                <h3 className="font-semibold text-tech-blue mb-1">Patricia Alfonso</h3>
+                <p className="text-gray-300">Marketing, Merch</p>
+                <div className="text-4xl mt-3">👤</div>
+              </div>
+            </div>
+            <br></br>
+            <div className="grid grid-center grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+              <div></div>
+              <div className="tech-card text-center">
+                <h3 className="font-semibold text-tech-blue mb-1">Robert Fuller</h3>
+                <p className="text-gray-300">Competition Layout, Website Testing</p>
+                <div className="text-4xl mt-3">👤</div>
+              </div>
+              <div className="tech-card text-center">
+                <h3 className="font-semibold text-tech-blue mb-1">Shamikh Quazi</h3>
+                <p className="text-gray-300">Finances</p>
+                <img src="/SQuazi.jpg" alt="Shamikh Quazi" className="mt-3 w-full h-40 object-cover rounded" />
+              </div>
+              <div className="tech-card text-center">
+                <h3 className="font-semibold text-tech-blue mb-1">Shelvy Millado</h3>
+                <p className="text-gray-300">Instagram, Reels, LinkedIn</p>
+                <div className="text-4xl mt-3">👤</div>
+              </div>
+            </div>
+
           </div>
         </section>
 
