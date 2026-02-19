@@ -50,10 +50,15 @@ export const api = {
   },
   questions: {
     list: () => base('/api/questions/'),
-    run: (code, questionIndex) =>
+    run: (code, questionIndex, language = 'python', options = {}) =>
       base('/api/questions/run', {
         method: 'POST',
-        body: JSON.stringify({ code, question_index: questionIndex }),
+        body: JSON.stringify({
+          code,
+          question_index: questionIndex,
+          language,
+          preview: options.preview === true,
+        }),
       }),
   },
 };
