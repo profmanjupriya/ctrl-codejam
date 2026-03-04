@@ -29,6 +29,13 @@ def pause_exam():
         _exam_end_time = None
 
 
+def reset_exam():
+    """Hard reset: restart full TIME_PER_QUESTION window and clear any pause state."""
+    global _exam_end_time, _paused_remaining
+    _exam_end_time = time.time() + TIME_PER_QUESTION
+    _paused_remaining = None
+
+
 def get_start_time():
     """Truthy if exam has been started (running or paused)."""
     return _exam_end_time is not None or _paused_remaining is not None

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, session
 
 from db import get_all_users, create_user, delete_user, update_user_password, clear_users_except_admin, get_leaderboard
-from timer_service import start_exam, pause_exam, get_status
+from timer_service import start_exam, pause_exam, reset_exam, get_status
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/api/admin")
 
@@ -26,6 +26,14 @@ def pause_exam_route():
         return jsonify({"ok": False, "error": "Admin only"}), 403
     pause_exam()
     return jsonify({"ok": True, "message": "Exam timer paused"})
+
+
+@admin_bp.route("/reset-exam", methods=["POST"])
+def reset_exam_route():
+    if not require_admin():
+        return jsonify({"ok": False, "error": "Admin only"}), 403
+    reset_exam()
+    return jsonify({"ok": True, "message": "Exam timer reset"})
 
 
 @admin_bp.route("/timer-status", methods=["GET"])
