@@ -1,0 +1,13 @@
+FROM python:3.12-slim
+
+# Install minimal toolchain: Java + g++
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openjdk-17-jdk-headless \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /sandbox
+
+# Default command is unused; overridden by docker run
+CMD ["bash"]
+

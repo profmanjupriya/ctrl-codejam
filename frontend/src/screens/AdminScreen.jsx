@@ -77,6 +77,15 @@ export default function AdminScreen() {
     }
   };
 
+  const resetExam = async () => {
+    try {
+      await api.admin.resetExam();
+      await loadTimer();
+    } catch (e) {
+      console.warn(e);
+    }
+  };
+
   const handleAddUser = async (e) => {
     e.preventDefault();
     if (!newUsername.trim() || !newPassword) {
@@ -152,6 +161,16 @@ export default function AdminScreen() {
               ) : (
                 <button type="button" className="admin-primary-btn" onClick={pauseExam}>
                   Pause Timer
+                </button>
+              )}
+              {remaining != null && (
+                <button
+                  type="button"
+                  className="admin-primary-btn admin-btn-sm"
+                  style={{ marginLeft: '8px' }}
+                  onClick={resetExam}
+                >
+                  Restart 30 min
                 </button>
               )}
             </div>

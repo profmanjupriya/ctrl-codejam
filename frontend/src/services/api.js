@@ -33,6 +33,7 @@ export const api = {
   admin: {
     startExam: () => base('/api/admin/start-exam', { method: 'POST' }),
     pauseExam: () => base('/api/admin/pause-exam', { method: 'POST' }),
+    resetExam: () => base('/api/admin/reset-exam', { method: 'POST' }),
     users: () => base('/api/admin/users'),
     createUser: (username, password) =>
       base('/api/admin/users', {
