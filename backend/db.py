@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import time
 from typing import Tuple
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -135,3 +136,31 @@ def clear_users_except_admin():
     conn.commit()
     conn.close()
     return n
+
+
+def record_score(user_id: int, points: int):
+    """Record points awarded to a user (for leaderboard)."""
+    if points <= 0:
+        return
+    conn = get_db()
+    conn.execute(
+        "INSERT INTO scores (user_id, score, completed_at) VALUES (?, ?, ?)",
+        (user_id, points, time.time()),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_leaderboard():
+    """Return list of { username, score } for all non-admin users, sorted by score descending."""
+    conn = get_db()
+    rows = conn.execute("""
+        SELECT u.username, COALESCE(SUM(s.score), 0) AS total
+        FROM users u
+        LEFT JOIN scores s ON u.id = s.user_id
+        WHERE u.username != ?
+        GROUP BY u.id
+        ORDER BY total DESC, u.username
+    """, (ADMIN_USERNAME,)).fetchall()
+    conn.close()
+    return [{"username": r["username"], "score": int(r["total"])} for r in rows]
