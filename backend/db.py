@@ -7,9 +7,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from config import DATABASE
 
-# Admin is stored in DB with hashed password; this is only for ensuring admin exists on init
-ADMIN_USERNAME = "admin"
-ADMIN_DEFAULT_PASSWORD = "code"
+# Admin is stored in DB with hashed password; this is only for ensuring admin exists on init.
+# The initial admin username and password are provided via environment variables so they are
+# not hard-coded in the repository.
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_DEFAULT_PASSWORD = os.environ.get("ADMIN_DEFAULT_PASSWORD", "code")
 
 
 def get_db():
@@ -47,17 +49,25 @@ def _is_hashed(password_value: str) -> bool:
 
 
 def ensure_admin():
-    """Ensure admin user exists with hashed password. Migrate plaintext admin password to hash if needed."""
+    """Ensure admin user exists with hashed password based on env vars."""
     conn = get_db()
-    row = conn.execute("SELECT id, password FROM users WHERE username = ?", (ADMIN_USERNAME,)).fetchone()
+    row = conn.execute(
+        "SELECT id, password FROM users WHERE username = ?",
+        (ADMIN_USERNAME,),
+    ).fetchone()
     hashed = generate_password_hash(ADMIN_DEFAULT_PASSWORD)
     if not row:
+        # Create admin with env-provided credentials
         conn.execute(
             "INSERT INTO users (username, password) VALUES (?, ?)",
             (ADMIN_USERNAME, hashed),
         )
-    elif not _is_hashed(row["password"]):
-        conn.execute("UPDATE users SET password = ? WHERE username = ?", (hashed, ADMIN_USERNAME))
+    else:
+        # Always sync admin password to the current env value
+        conn.execute(
+            "UPDATE users SET password = ? WHERE username = ?",
+            (hashed, ADMIN_USERNAME),
+        )
     conn.commit()
     conn.close()
 
