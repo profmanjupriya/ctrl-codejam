@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, session
 
-from timer_service import get_remaining, get_start_time
+from timer_service import get_start_time, get_status
 
 timer_bp = Blueprint("timer", __name__, url_prefix="/api/timer")
 
@@ -9,11 +9,7 @@ timer_bp = Blueprint("timer", __name__, url_prefix="/api/timer")
 def status():
     if not session.get("username"):
         return jsonify({"ok": False, "error": "Login required"}), 401
-    remaining = get_remaining()
-    start = get_start_time()
-    return jsonify({
-        "ok": True,
-        "started": start is not None,
-        "remaining": remaining,
-        "start_time": start,
-    })
+    data = get_status()
+    data["ok"] = True
+    data["start_time"] = get_start_time()
+    return jsonify(data)

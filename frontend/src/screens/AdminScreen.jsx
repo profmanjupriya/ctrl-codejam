@@ -5,11 +5,12 @@ import { api, formatTime } from '../services/api.js';
 
 export default function AdminScreen() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const [users, setUsers] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const [remaining, setRemaining] = useState(null);
   const [paused, setPaused] = useState(false);
+  const [timerSuspended, setTimerSuspended] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -40,10 +41,12 @@ export default function AdminScreen() {
       if (res.ok) {
         setRemaining(res.remaining);
         setPaused(res.paused === true);
+        setTimerSuspended(res.suspended === true);
       }
     } catch {
       setRemaining(null);
       setPaused(false);
+      setTimerSuspended(false);
     }
   };
 
@@ -54,10 +57,18 @@ export default function AdminScreen() {
   };
 
   useEffect(() => {
+    if (!user) {
+      navigate('/registration', { replace: true });
+      return;
+    }
+    if (user && !user.is_admin) {
+      navigate('/question', { replace: true });
+      return;
+    }
     refresh();
     const id = setInterval(loadTimer, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [user, navigate]);
 
   const startExam = async () => {
     try {
@@ -109,7 +120,7 @@ export default function AdminScreen() {
   };
 
   const handleDeleteUser = async (userId, username) => {
-    if (username === 'admin') return;
+    if (username === user?.username) return;
     if (!window.confirm(`Delete user "${username}"?`)) return;
     try {
       await api.admin.deleteUser(userId);
@@ -149,34 +160,40 @@ export default function AdminScreen() {
         <div className="admin-col">
           <section className="admin-section">
             <h2 className="admin-heading">Timer</h2>
-            <div className="admin-timer-actions">
-              {!remaining && remaining !== 0 ? (
-                <button type="button" className="admin-primary-btn" onClick={startExam}>
-                  Start Exam Timer
-                </button>
-              ) : paused ? (
-                <button type="button" className="admin-primary-btn" onClick={startExam}>
-                  Resume Timer
-                </button>
-              ) : (
-                <button type="button" className="admin-primary-btn" onClick={pauseExam}>
-                  Pause Timer
-                </button>
-              )}
-              {remaining != null && (
-                <button
-                  type="button"
-                  className="admin-primary-btn admin-btn-sm"
-                  style={{ marginLeft: '8px' }}
-                  onClick={resetExam}
-                >
-                  Restart 30 min
-                </button>
-              )}
-            </div>
-            <p className="admin-timer">
-              {remaining != null ? `⏱ Remaining: ${formatTime(remaining)}${paused ? ' (paused)' : ''}` : '⏱ Waiting to start'}
-            </p>
+            {timerSuspended ? (
+              <p className="admin-timer">⏱ Timer suspended — exam is always open; Run is enabled for everyone.</p>
+            ) : (
+              <>
+                <div className="admin-timer-actions">
+                  {!remaining && remaining !== 0 ? (
+                    <button type="button" className="admin-primary-btn" onClick={startExam}>
+                      Start Exam Timer
+                    </button>
+                  ) : paused ? (
+                    <button type="button" className="admin-primary-btn" onClick={startExam}>
+                      Resume Timer
+                    </button>
+                  ) : (
+                    <button type="button" className="admin-primary-btn" onClick={pauseExam}>
+                      Pause Timer
+                    </button>
+                  )}
+                  {remaining != null && (
+                    <button
+                      type="button"
+                      className="admin-primary-btn admin-btn-sm"
+                      style={{ marginLeft: '8px' }}
+                      onClick={resetExam}
+                    >
+                      Restart 30 min
+                    </button>
+                  )}
+                </div>
+                <p className="admin-timer">
+                  {remaining != null ? `⏱ Remaining: ${formatTime(remaining)}${paused ? ' (paused)' : ''}` : '⏱ Waiting to start'}
+                </p>
+              </>
+            )}
           </section>
 
           <section className="admin-section">
@@ -215,7 +232,7 @@ export default function AdminScreen() {
                 {users.map((u) => (
                   <li key={u.id} className="admin-user-row">
                     <span>{u.username}</span>
-                    {u.username !== 'admin' && (
+                    {u.username !== user?.username && (
                       <button
                         type="button"
                         className="admin-delete-btn"

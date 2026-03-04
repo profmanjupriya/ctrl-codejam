@@ -13,7 +13,7 @@ function getStarterForLanguage(q, lang) {
 
 export default function QuestionScreen() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const [questions, setQuestions] = useState([]);
   const [qIndex, setQIndex] = useState(0);
   const [language, setLanguage] = useState('python');
@@ -21,6 +21,7 @@ export default function QuestionScreen() {
   const [output, setOutput] = useState('');
   const [score, setScore] = useState(0);
   const [remaining, setRemaining] = useState(null);
+  const [timerSuspended, setTimerSuspended] = useState(false);
   const [runDisabled, setRunDisabled] = useState(true);
   const [runCooldown, setRunCooldown] = useState(false);
   const [finalScore, setFinalScore] = useState(null);
@@ -49,16 +50,22 @@ export default function QuestionScreen() {
       const res = await api.timer.status();
       if (res.ok) {
         setRemaining(res.remaining);
+        setTimerSuspended(res.suspended === true);
         if (res.started && !completed) setRunDisabled(false);
       }
     } catch {
       setRemaining(null);
+      setTimerSuspended(false);
     }
   };
 
   useEffect(() => {
+    if (!user) {
+      navigate('/registration', { replace: true });
+      return;
+    }
     loadQuestions();
-  }, []);
+  }, [user, navigate]);
 
   useEffect(() => {
     const id = setInterval(pollTimer, 1000);
@@ -118,7 +125,7 @@ export default function QuestionScreen() {
       <div className="question-top-bar">
         <span className="question-top-text">Score: {score}</span>
         <span className="question-top-text">
-          {remaining != null ? `⏱ ${formatTime(remaining)}` : '⏱ Waiting for admin…'}
+          {timerSuspended ? '⏱ Timer suspended' : remaining != null ? `⏱ ${formatTime(remaining)}` : '⏱ Waiting for admin…'}
         </span>
       </div>
 

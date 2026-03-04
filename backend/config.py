@@ -6,6 +6,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-change-in-production")
 DATABASE = os.path.join(os.path.dirname(__file__), "users.db")
 TIME_PER_QUESTION = 30 * 60  # 30 minutes in seconds
 RUN_COOLDOWN = 3  # seconds
+# When True, exam is always "started", no countdown, fixed points per correct answer.
+TIMER_SUSPENDED = os.environ.get("TIMER_SUSPENDED", "true").lower() in ("1", "true", "yes")
 
 # Questions are loaded from a JSON file on the backend only.
 _QUESTIONS_FILE = os.environ.get(

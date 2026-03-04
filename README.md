@@ -83,6 +83,61 @@ A speed coding competition app: **Flask** backend and **React** (Vite) frontend.
 
 ---
 
+## Deploy backend to droplet (rsync)
+
+Run **from inside the project directory** (so the source path is `.` or the current folder):
+
+```bash
+cd /path/to/ctrl-codejam
+rsync -av --delete . root@64.23.188.213:/opt/ctrl-codejam/
+```
+
+- Use your real project path (e.g. `~/ctrl-codejam` or `~/Projects/ctrl-codejam`).  
+- **Wrong:** `rsync ... ctrl-codejam/ ...` from your home directory — that looks for a folder named `ctrl-codejam` in `~` and fails with "No such file or directory" if you're not in it.
+
+On the server after rsync:
+
+```bash
+cd /opt/ctrl-codejam/backend
+
+# Build the code-runner Docker image (required for Run; Python/Java/C++ run inside it)
+docker build -t codeblitz-runner:latest -f Dockerfile.runner .
+
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+# Ensure .env exists (ADMIN_USERNAME, ADMIN_DEFAULT_PASSWORD, CORS_ORIGINS, etc.)
+python app.py
+```
+
+**"pull access denied" / "Unable to find image codeblitz-runner"** — The image must exist on the **same machine and same Docker** that runs the Flask app. Do this:
+
+1. **SSH to the droplet** (the host where the app runs).
+2. **Build there:** `cd /opt/ctrl-codejam/backend && docker build -t codeblitz-runner:latest -f Dockerfile.runner .`
+3. **Confirm:** `docker images` should list `codeblitz-runner` with tag `latest`.
+4. **Start (or restart) the app in that same environment** — e.g. in the same SSH session, or ensure systemd/cron runs as a user that can see that Docker (e.g. root). If you start the app in one terminal and built in another, both must be on the same server; if the app runs in a container, the image must be on the host that the app’s container uses for `docker run`.
+
+**403 or 401 on admin routes (timer-status, add user, etc.):** The browser only sends the session cookie when the frontend and backend are the same site. If the frontend is at `http://localhost:5173` and the backend at `http://64.23.188.213:5000`, the cookie is **not** sent (cross-origin), so the server sees no session and returns **401** (or 403). Fix by using an **SSH tunnel** so the API is also on localhost:
+
+1. **Open a tunnel** (leave this terminal open):
+   ```bash
+   ssh -L 5000:127.0.0.1:5000 root@64.23.188.213
+   ```
+   Now `http://localhost:5000` on your Mac is forwarded to the backend on the droplet.
+
+2. **Point the frontend at localhost:** In `frontend/.env.local` set:
+   ```bash
+   VITE_API_BASE_URL=http://localhost:5000
+   ```
+
+3. **Run the frontend locally:** `cd frontend && npm run dev`, then open **http://localhost:5173** in the browser.
+
+4. **Log in as admin.** The login request goes to localhost:5000 (tunnel → droplet). The cookie is set for localhost, so all later admin requests from the same page send the cookie and succeed.
+
+- If you see **401** on admin routes, the session cookie is not being sent (check tunnel is open and you use `http://localhost:5173` and `VITE_API_BASE_URL=http://localhost:5000`).
+- Server `.env`: default `CORS_ORIGINS` already includes `http://localhost:5173`. For a deployed frontend on another host (e.g. Vercel), add that URL to `CORS_ORIGINS` and, for cross-origin cookies over HTTPS, set `SESSION_COOKIE_SAMESITE=None` and `SESSION_COOKIE_SECURE=true` (backend must be HTTPS).
+
+---
+
 ## Backend API (summary)
 
 | Method | Endpoint | Description |
