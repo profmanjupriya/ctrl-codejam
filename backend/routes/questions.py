@@ -8,6 +8,7 @@ import shutil
 from flask import Blueprint, request, jsonify, session
 
 from config import QUESTIONS, TIME_PER_QUESTION
+from db import record_score
 from timer_service import get_remaining, get_start_time
 
 questions_bp = Blueprint("questions", __name__, url_prefix="/api/questions")
@@ -210,6 +211,9 @@ def run_code():
         remaining = get_remaining()
         if remaining is not None:
             points = max(10, int((remaining / TIME_PER_QUESTION) * 100))
+            user_id = session.get("user_id")
+            if user_id and points > 0:
+                record_score(user_id, points)
 
     return jsonify({
         "ok": True,

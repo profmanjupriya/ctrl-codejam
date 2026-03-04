@@ -32,6 +32,7 @@ export const api = {
   },
   admin: {
     startExam: () => base('/api/admin/start-exam', { method: 'POST' }),
+    pauseExam: () => base('/api/admin/pause-exam', { method: 'POST' }),
     users: () => base('/api/admin/users'),
     createUser: (username, password) =>
       base('/api/admin/users', {
@@ -47,6 +48,7 @@ export const api = {
       }),
     clearUsers: () => base('/api/admin/users/clear', { method: 'POST' }),
     timerStatus: () => base('/api/admin/timer-status'),
+    leaderboard: () => base('/api/admin/leaderboard'),
   },
   questions: {
     list: () => base('/api/questions/'),

@@ -1,0 +1,242 @@
+[
+  {
+    "id": 0,
+    "prompt": "Print the text 'Hello, World!' exactly.",
+    "starter": "print('Hello, World!')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Hello, World!\" << endl;\n    return 0;\n}",
+    "expected": "Hello, World!\n"
+  },
+  {
+    "id": 1,
+    "prompt": "Print the numbers 1 to 5, each on its own line.",
+    "starter": "for i in range(1, 6):\n    print(i)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 1; i <= 5; i++) {\n            System.out.println(i);\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 1; i <= 5; i++) {\n        cout << i << endl;\n    }\n    return 0;\n}",
+    "expected": "1\n2\n3\n4\n5\n"
+  },
+  {
+    "id": 2,
+    "prompt": "Print the numbers 0 to 4, each on its own line.",
+    "starter": "for i in range(5):\n    print(i)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 0; i < 5; i++) {\n            System.out.println(i);\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 0; i < 5; i++) {\n        cout << i << endl;\n    }\n    return 0;\n}",
+    "expected": "0\n1\n2\n3\n4\n"
+  },
+  {
+    "id": 3,
+    "prompt": "Print the text 'CTRL SDSU' on one line.",
+    "starter": "print('CTRL SDSU')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"CTRL SDSU\");\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"CTRL SDSU\" << endl;\n    return 0;\n}",
+    "expected": "CTRL SDSU\n"
+  },
+  {
+    "id": 4,
+    "prompt": "Print the sum of 7 and 5 (just the number).",
+    "starter": "print(7 + 5)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(7 + 5);\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << 7 + 5 << endl;\n    return 0;\n}",
+    "expected": "12\n"
+  },
+  {
+    "id": 5,
+    "prompt": "Print the product of 3 and 4 (just the number).",
+    "starter": "print(3 * 4)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(3 * 4);\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << 3 * 4 << endl;\n    return 0;\n}",
+    "expected": "12\n"
+  },
+  {
+    "id": 6,
+    "prompt": "Print the numbers 10 down to 6, each on its own line.",
+    "starter": "for i in range(10, 5, -1):\n    print(i)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 10; i >= 6; i--) {\n            System.out.println(i);\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 10; i >= 6; i--) {\n        cout << i << endl;\n    }\n    return 0;\n}",
+    "expected": "10\n9\n8\n7\n6\n"
+  },
+  {
+    "id": 7,
+    "prompt": "Print the text 'Hello' three times, each on its own line.",
+    "starter": "for _ in range(3):\n    print('Hello')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 0; i < 3; i++) {\n            System.out.println(\"Hello\");\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 0; i < 3; i++) {\n        cout << \"Hello\" << endl;\n    }\n    return 0;\n}",
+    "expected": "Hello\nHello\nHello\n"
+  },
+  {
+    "id": 8,
+    "prompt": "Print the squares of 1, 2, 3, and 4 (1, 4, 9, 16), each on its own line.",
+    "starter": "for i in range(1, 5):\n    print(i * i)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 1; i <= 4; i++) {\n            System.out.println(i * i);\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 1; i <= 4; i++) {\n        cout << i * i << endl;\n    }\n    return 0;\n}",
+    "expected": "1\n4\n9\n16\n"
+  },
+  {
+    "id": 9,
+    "prompt": "Print the even numbers from 2 to 10, each on its own line.",
+    "starter": "for i in range(2, 11, 2):\n    print(i)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 2; i <= 10; i += 2) {\n            System.out.println(i);\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 2; i <= 10; i += 2) {\n        cout << i << endl;\n    }\n    return 0;\n}",
+    "expected": "2\n4\n6\n8\n10\n"
+  },
+  {
+    "id": 10,
+    "prompt": "Print the odd numbers from 1 to 9, each on its own line.",
+    "starter": "for i in range(1, 10, 2):\n    print(i)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 1; i <= 9; i += 2) {\n            System.out.println(i);\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 1; i <= 9; i += 2) {\n        cout << i << endl;\n    }\n    return 0;\n}",
+    "expected": "1\n3\n5\n7\n9\n"
+  },
+  {
+    "id": 11,
+    "prompt": "Print the text 'Code Blitz' five times, each on its own line.",
+    "starter": "for _ in range(5):\n    print('Code Blitz')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 0; i < 5; i++) {\n            System.out.println(\"Code Blitz\");\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 0; i < 5; i++) {\n        cout << \"Code Blitz\" << endl;\n    }\n    return 0;\n}",
+    "expected": "Code Blitz\nCode Blitz\nCode Blitz\nCode Blitz\nCode Blitz\n"
+  },
+  {
+    "id": 12,
+    "prompt": "Print the result of 100 minus 58.",
+    "starter": "print(100 - 58)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(100 - 58);\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << 100 - 58 << endl;\n    return 0;\n}",
+    "expected": "42\n"
+  },
+  {
+    "id": 13,
+    "prompt": "Print the text 'Python', 'Java', and 'C++' on separate lines, in that order.",
+    "starter": "print('Python')\nprint('Java')\nprint('C++')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Python\");\n        System.out.println(\"Java\");\n        System.out.println(\"C++\");\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Python\" << endl;\n    cout << \"Java\" << endl;\n    cout << \"C++\" << endl;\n    return 0;\n}",
+    "expected": "Python\nJava\nC++\n"
+  },
+  {
+    "id": 14,
+    "prompt": "Print the length of the word 'programming' (just the number).",
+    "starter": "print(len('programming'))",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"programming\".length());\n    }\n}",
+    "starter_cpp": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string s = \"programming\";\n    cout << s.length() << endl;\n    return 0;\n}",
+    "expected": "11\n"
+  },
+  {
+    "id": 15,
+    "prompt": "Print the sum of the numbers 1 through 5 (1+2+3+4+5).",
+    "starter": "total = 0\nfor i in range(1, 6):\n    total += i\nprint(total)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        int total = 0;\n        for (int i = 1; i <= 5; i++) {\n            total += i;\n        }\n        System.out.println(total);\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int total = 0;\n    for (int i = 1; i <= 5; i++) {\n        total += i;\n    }\n    cout << total << endl;\n    return 0;\n}",
+    "expected": "15\n"
+  },
+  {
+    "id": 16,
+    "prompt": "Print the first 4 multiples of 3 (3, 6, 9, 12), each on its own line.",
+    "starter": "for i in range(1, 5):\n    print(3 * i)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 1; i <= 4; i++) {\n            System.out.println(3 * i);\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 1; i <= 4; i++) {\n        cout << 3 * i << endl;\n    }\n    return 0;\n}",
+    "expected": "3\n6\n9\n12\n"
+  },
+  {
+    "id": 17,
+    "prompt": "Print the text 'SDSU' 4 times on one line separated by spaces.",
+    "starter": "print('SDSU SDSU SDSU SDSU')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"SDSU SDSU SDSU SDSU\");\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"SDSU SDSU SDSU SDSU\" << endl;\n    return 0;\n}",
+    "expected": "SDSU SDSU SDSU SDSU\n"
+  },
+  {
+    "id": 18,
+    "prompt": "Print the characters 'A', 'B', 'C', and 'D' each on its own line.",
+    "starter": "for c in ['A', 'B', 'C', 'D']:\n    print(c)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        char[] arr = {'A', 'B', 'C', 'D'};\n        for (char c : arr) {\n            System.out.println(c);\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char arr[] = {'A', 'B', 'C', 'D'};\n    for (char c : arr) {\n        cout << c << endl;\n    }\n    return 0;\n}",
+    "expected": "A\nB\nC\nD\n"
+  },
+  {
+    "id": 19,
+    "prompt": "Print the text 'True' if 5 is greater than 2, otherwise 'False'.",
+    "starter": "if 5 > 2:\n    print('True')\nelse:\n    print('False')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        if (5 > 2) {\n            System.out.println(\"True\");\n        } else {\n            System.out.println(\"False\");\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    if (5 > 2) {\n        cout << \"True\" << endl;\n    } else {\n        cout << \"False\" << endl;\n    }\n    return 0;\n}",
+    "expected": "True\n"
+  },
+  {
+    "id": 20,
+    "prompt": "Print the string '12345' (the digits one to five with no spaces).",
+    "starter": "print('12345')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"12345\");\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"12345\" << endl;\n    return 0;\n}",
+    "expected": "12345\n"
+  },
+  {
+    "id": 21,
+    "prompt": "Print the minimum of the numbers 8 and 3.",
+    "starter": "print(min(8, 3))",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(Math.min(8, 3));\n    }\n}",
+    "starter_cpp": "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n    cout << min(8, 3) << endl;\n    return 0;\n}",
+    "expected": "3\n"
+  },
+  {
+    "id": 22,
+    "prompt": "Print the maximum of the numbers 10 and 25.",
+    "starter": "print(max(10, 25))",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(Math.max(10, 25));\n    }\n}",
+    "starter_cpp": "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n    cout << max(10, 25) << endl;\n    return 0;\n}",
+    "expected": "25\n"
+  },
+  {
+    "id": 23,
+    "prompt": "Print the text 'Even' if 10 is even, otherwise 'Odd'.",
+    "starter": "if 10 % 2 == 0:\n    print('Even')\nelse:\n    print('Odd')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        if (10 % 2 == 0) {\n            System.out.println(\"Even\");\n        } else {\n            System.out.println(\"Odd\");\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    if (10 % 2 == 0) {\n        cout << \"Even\" << endl;\n    } else {\n        cout << \"Odd\" << endl;\n    }\n    return 0;\n}",
+    "expected": "Even\n"
+  },
+  {
+    "id": 24,
+    "prompt": "Print the numbers 5, 4, 3, 2, 1 each on its own line.",
+    "starter": "for i in range(5, 0, -1):\n    print(i)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 5; i >= 1; i--) {\n            System.out.println(i);\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 5; i >= 1; i--) {\n        cout << i << endl;\n    }\n    return 0;\n}",
+    "expected": "5\n4\n3\n2\n1\n"
+  },
+  {
+    "id": 25,
+    "prompt": "Print the result of 2 raised to the power of 5 (2^5).",
+    "starter": "print(2 ** 5)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println((int)Math.pow(2, 5));\n    }\n}",
+    "starter_cpp": "#include <iostream>\n#include <cmath>\nusing namespace std;\n\nint main() {\n    cout << (int)pow(2, 5) << endl;\n    return 0;\n}",
+    "expected": "32\n"
+  },
+  {
+    "id": 26,
+    "prompt": "Print the string 'abcabc' (the word 'abc' repeated twice).",
+    "starter": "print('abc' * 2)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"abc\" + \"abc\");\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"abcabc\" << endl;\n    return 0;\n}",
+    "expected": "abcabc\n"
+  },
+  {
+    "id": 27,
+    "prompt": "Print the first 5 positive multiples of 2 (2, 4, 6, 8, 10) on separate lines.",
+    "starter": "for i in range(1, 6):\n    print(2 * i)",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        for (int i = 1; i <= 5; i++) {\n            System.out.println(2 * i);\n        }\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for (int i = 1; i <= 5; i++) {\n        cout << 2 * i << endl;\n    }\n    return 0;\n}",
+    "expected": "2\n4\n6\n8\n10\n"
+  },
+  {
+    "id": 28,
+    "prompt": "Print the text 'Start' on one line and 'End' on the next line.",
+    "starter": "print('Start')\nprint('End')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Start\");\n        System.out.println(\"End\");\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Start\" << endl;\n    cout << \"End\" << endl;\n    return 0;\n}",
+    "expected": "Start\nEnd\n"
+  },
+  {
+    "id": 29,
+    "prompt": "Print the text 'Done' exactly once.",
+    "starter": "print('Done')",
+    "starter_java": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Done\");\n    }\n}",
+    "starter_cpp": "#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << \"Done\" << endl;\n    return 0;\n}",
+    "expected": "Done\n"
+  }
+]

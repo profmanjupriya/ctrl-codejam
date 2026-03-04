@@ -80,22 +80,11 @@ export default function LandingPage() {
             <p className="text-white-400 max-w-2xl mx-auto mb-3">
               A high-speed coding competition where teams of up to 3 compete for $450 in prizes.
             </p>
-            <p className="text-white-400 max-w-2xl mx-auto mb-10">
-              Sign Up from February 23rd - March 16th to compete!!
-            </p>
-            <a
-              href="https://docs.google.com/forms/d/1IBp4rhWKWIqCa-5zKK81LZjxX3E7skSA4rOa-oBn9Eo/edit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="tech-button inline-block"
-            >
-              Sign up
-            </a>
             <a
               href="https://discord.gg/5Jdt4WuP4K"
               target="_blank"
               rel="noopener noreferrer"
-              className="tech-button-outline ml-4 inline-block"
+              className="tech-button inline-block"
             >
               Discord
             </a>
@@ -174,7 +163,7 @@ export default function LandingPage() {
               <div className="tech-card text-center">
                 <h3 className="font-semibold text-tech-blue mb-1">Manju Muralidharan Priya</h3>
                 <p className="text-gray-300">Faculty Advisor</p>
-                <img src="/Manju.png" alt="Manju Muralidharan Priya" className="mt-3 w-full h-45 object-cover rounded" />
+                <div className="text-4xl mt-3">👤</div>
               </div>
             </div>
             <br></br>
@@ -182,7 +171,7 @@ export default function LandingPage() {
               <div className="tech-card text-center">
                 <h3 className="font-semibold text-tech-blue mb-1">Aadi Bery</h3>
                 <p className="text-gray-300">Event Logistics, Industry Outreach</p>
-                <img src="/ABeryHeadshot.jpg" alt="Aadi Bery" className="mt-3 w-50 h-50 object-cover rounded" />
+                <div className="text-4xl mt-3">👤</div>
               </div>
               <div className="tech-card text-center">
                 <h3 className="font-semibold text-tech-blue mb-1">Brandon Garate</h3>
@@ -244,7 +233,7 @@ export default function LandingPage() {
               <div className="tech-card text-center">
                 <h3 className="font-semibold text-tech-blue mb-1">Shamikh Quazi</h3>
                 <p className="text-gray-300">Finances</p>
-                <img src="/SQuazi.jpg" alt="Shamikh Quazi" className="mt-3 w-full h-40 object-cover rounded" />
+                <div className="text-4xl mt-3">👤</div>
               </div>
               <div className="tech-card text-center">
                 <h3 className="font-semibold text-tech-blue mb-1">Shelvy Millado</h3>

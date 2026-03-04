@@ -4,7 +4,6 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { api, formatTime } from '../services/api.js';
 
 const RUN_COOLDOWN_MS = 3000;
-const REALTIME_DEBOUNCE_MS = 1200;
 
 function getStarterForLanguage(q, lang) {
   if (lang === 'java' && q.starter_java) return q.starter_java;
@@ -20,15 +19,13 @@ export default function QuestionScreen() {
   const [language, setLanguage] = useState('python');
   const [code, setCode] = useState('');
   const [output, setOutput] = useState('');
-  const [realtimeRunning, setRealtimeRunning] = useState(false);
   const [score, setScore] = useState(0);
   const [remaining, setRemaining] = useState(null);
   const [runDisabled, setRunDisabled] = useState(true);
   const [runCooldown, setRunCooldown] = useState(false);
   const [finalScore, setFinalScore] = useState(null);
+  const [completed, setCompleted] = useState(false);
   const runCooldownRef = useRef(null);
-  const realtimeDebounceRef = useRef(null);
-  const lastRealtimeRef = useRef({ code: '', qIndex: -1, language: '' });
 
   const loadQuestions = async () => {
     try {
@@ -52,7 +49,7 @@ export default function QuestionScreen() {
       const res = await api.timer.status();
       if (res.ok) {
         setRemaining(res.remaining);
-        if (res.started) setRunDisabled(false);
+        if (res.started && !completed) setRunDisabled(false);
       }
     } catch {
       setRemaining(null);
@@ -74,39 +71,8 @@ export default function QuestionScreen() {
     }
   }, [qIndex, questions, language]);
 
-  // Realtime compile/run: debounced run as user types (preview only, no scoring)
-  useEffect(() => {
-    if (!questions.length || runDisabled) return;
-    if (qIndex >= questions.length) return;
-
-    const key = `${code}-${qIndex}-${language}`;
-    if (lastRealtimeRef.current.code === code && lastRealtimeRef.current.qIndex === qIndex && lastRealtimeRef.current.language === language) {
-      return;
-    }
-    lastRealtimeRef.current = { code, qIndex, language };
-
-    if (realtimeDebounceRef.current) clearTimeout(realtimeDebounceRef.current);
-
-    realtimeDebounceRef.current = setTimeout(async () => {
-      realtimeDebounceRef.current = null;
-      setRealtimeRunning(true);
-      try {
-        const res = await api.questions.run(code, qIndex, language, { preview: true });
-        if (res.ok && res.preview) setOutput(res.output || '');
-      } catch {
-        // ignore preview errors (e.g. network); output stays as-is
-      } finally {
-        setRealtimeRunning(false);
-      }
-    }, REALTIME_DEBOUNCE_MS);
-
-    return () => {
-      if (realtimeDebounceRef.current) clearTimeout(realtimeDebounceRef.current);
-    };
-  }, [code, qIndex, language, questions.length, runDisabled]);
-
   const runCode = async () => {
-    if (runCooldown || runDisabled) return;
+    if (runCooldown || runDisabled || completed) return;
     setRunCooldown(true);
     setOutput('Running...\n');
     try {
@@ -124,7 +90,8 @@ export default function QuestionScreen() {
               setFinalScore(newScore);
               setOutput((o) => o + `\n🎉 Quiz Complete!\nFinal Score: ${newScore}\n`);
               setRunDisabled(true);
-              return i;
+              setCompleted(true);
+              return questions.length; // move index past last question
             }
             return next;
           });
@@ -139,7 +106,7 @@ export default function QuestionScreen() {
   };
 
   const currentQ = questions[qIndex];
-  const isComplete = qIndex >= questions.length && questions.length > 0;
+  const isComplete = completed || (qIndex >= questions.length && questions.length > 0);
 
   const handleLogout = () => {
     logout();
@@ -199,9 +166,6 @@ export default function QuestionScreen() {
           spellCheck={false}
         />
         <div className="question-output-wrap">
-          {realtimeRunning && (
-            <span className="question-output-compiling" aria-hidden>Compiling…</span>
-          )}
           <pre className="question-output">{output || ' '}</pre>
         </div>
       </div>
