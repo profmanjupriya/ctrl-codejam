@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { api } from '../services/api.js';
+import { api, setAuthToken, clearAuthToken } from '../services/api.js';
 
 const AuthContext = createContext(null);
 
@@ -11,9 +11,13 @@ export function AuthProvider({ children }) {
     try {
       const res = await api.auth.me();
       if (res.ok && res.user) setUser(res.user);
-      else setUser(null);
+      else {
+        setUser(null);
+        clearAuthToken();
+      }
     } catch {
       setUser(null);
+      clearAuthToken();
     } finally {
       setLoading(false);
     }
@@ -26,6 +30,7 @@ export function AuthProvider({ children }) {
   const login = async (username, password) => {
     const res = await api.auth.login(username, password);
     if (res.ok) {
+      if (res.token) setAuthToken(res.token);
       setUser({ username: res.username, is_admin: res.is_admin });
       return { ok: true, is_admin: res.is_admin };
     }
@@ -33,8 +38,12 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    await api.auth.logout();
-    setUser(null);
+    try {
+      await api.auth.logout();
+    } finally {
+      clearAuthToken();
+      setUser(null);
+    }
   };
 
   return (

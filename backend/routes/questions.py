@@ -8,13 +8,13 @@ from flask import Blueprint, request, jsonify, session
 
 from config import QUESTIONS, TIME_PER_QUESTION
 from db import record_score
-from timer_service import get_remaining, get_start_time
+from timer_service import get_remaining, get_start_time, get_status
 
 questions_bp = Blueprint("questions", __name__, url_prefix="/api/questions")
 
 RUN_TIMEOUT_SEC = 10
 DOCKER_BIN = os.environ.get("DOCKER_BIN", "docker")
-RUNNER_IMAGE = os.environ.get("RUNNER_IMAGE", "codeblitz-runner")
+RUNNER_IMAGE = os.environ.get("RUNNER_IMAGE", "codeblitz-runner:latest")
 
 
 def _run_in_docker(lang: str, code: str) -> str:
@@ -74,8 +74,18 @@ def _run_in_docker(lang: str, code: str) -> str:
         err = proc.stderr or ""
 
         if proc.returncode != 0:
-            if err.strip():
-                return f"Runtime Error:\n{err.strip()}"
+            err_stripped = err.strip()
+            # Missing image: user must build on the server (same host/user as the app)
+            if "Unable to find image" in err_stripped or "pull access denied" in err_stripped or "repository does not exist" in err_stripped:
+                return (
+                    "Runtime Error:\n"
+                    "The code-runner Docker image is missing on this server. "
+                    "SSH to the server where the app runs and run:\n"
+                    "  cd /opt/ctrl-codejam/backend && docker build -t codeblitz-runner:latest -f Dockerfile.runner .\n"
+                    "Then restart the app. Ensure you build on the same machine (and same Docker) that runs the app."
+                )
+            if err_stripped:
+                return f"Runtime Error:\n{err_stripped}"
             if out.strip():
                 return out.strip()
             return f"Error:\nRunner exited with code {proc.returncode}"
@@ -148,8 +158,13 @@ def run_code():
         remaining = get_remaining()
         if remaining is not None:
             points = max(10, int((remaining / TIME_PER_QUESTION) * 100))
+        else:
+            # Timer suspended: award fixed points per correct answer
+            if get_status().get("suspended"):
+                points = 10
+        if points > 0:
             user_id = session.get("user_id")
-            if user_id and points > 0:
+            if user_id:
                 record_score(user_id, points)
 
     return jsonify({

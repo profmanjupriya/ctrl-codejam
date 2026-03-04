@@ -1,13 +1,31 @@
 import { API_BASE_URL } from '../config.js';
 
+const AUTH_TOKEN_KEY = 'codeblitz_token';
+
+export function getAuthToken() {
+  return sessionStorage.getItem(AUTH_TOKEN_KEY);
+}
+
+export function setAuthToken(token) {
+  if (token) sessionStorage.setItem(AUTH_TOKEN_KEY, token);
+  else sessionStorage.removeItem(AUTH_TOKEN_KEY);
+}
+
+export function clearAuthToken() {
+  sessionStorage.removeItem(AUTH_TOKEN_KEY);
+}
+
 const base = (path, options = {}) => {
   const url = `${API_BASE_URL}${path}`;
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
+  const token = getAuthToken();
+  if (token) headers['Authorization'] = `Bearer ${token}`;
   const opts = {
     ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
+    headers,
     credentials: 'include',
   };
   return fetch(url, opts).then(async (res) => {
