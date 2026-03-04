@@ -1,5 +1,13 @@
+import os
+
 from flask import Flask
 from flask_cors import CORS
+
+from dotenv import load_dotenv
+
+# Load environment variables from a local .env file (ignored by git)
+BASE_DIR = os.path.dirname(__file__)
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 from config import SECRET_KEY
 from db import init_db
