@@ -30,16 +30,18 @@ def _run_in_docker(lang: str, code: str) -> str:
             inner_cmd = ["python", "main.py"]
         elif lang == "java":
             src_name = "Main.java"
-            # Compile then run Main
-            inner_cmd = ["sh", "-lc", "javac Main.java && java Main"]
+            # Compile into writable /tmp/run (keep /work read-only), then run
+            inner_cmd = ["sh", "-lc", "mkdir -p /tmp/run && javac -d /tmp/run /work/Main.java && java -cp /tmp/run Main"]
         else:  # cpp
             src_name = "solution.cpp"
-            # Compile then run the binary
-            inner_cmd = ["sh", "-lc", "g++ -o main solution.cpp && ./main"]
+            # Compile into writable /tmp/run (keep /work read-only), then run
+            inner_cmd = ["sh", "-lc", "mkdir -p /tmp/run && g++ /work/solution.cpp -O2 -std=c++17 -o /tmp/run/main && /tmp/run/main"]
 
         src_path = os.path.join(d, src_name)
         with open(src_path, "w", encoding="utf-8") as f:
             f.write(code)
+        # So container non-root user (uid 1000) can read/write the mount
+        os.chmod(d, 0o755)
 
         cmd = [
             DOCKER_BIN,
@@ -52,9 +54,9 @@ def _run_in_docker(lang: str, code: str) -> str:
             "--cpus",
             "0.5",
             "-v",
-            f"{d}:/sandbox",
+            f"{d}:/work",
             "-w",
-            "/sandbox",
+            "/work",
             RUNNER_IMAGE,
         ] + inner_cmd
 
