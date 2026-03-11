@@ -82,33 +82,45 @@ export default function QuestionScreen() {
     if (runCooldown || runDisabled || completed) return;
     setRunCooldown(true);
     setOutput('Running...\n');
-    try {
-      const res = await api.questions.run(code, qIndex, language);
-      setOutput(res.output || '');
-      if (res.correct && res.points) {
-        const newScore = score + res.points;
-        setScore(newScore);
-        setOutput((o) => o + `\n✅ Correct! +${res.points} points\n`);
-        if (runCooldownRef.current) clearTimeout(runCooldownRef.current);
-        runCooldownRef.current = setTimeout(() => {
-          setQIndex((i) => {
-            const next = i + 1;
-            if (next >= questions.length) {
-              setFinalScore(newScore);
-              setOutput((o) => o + `\n🎉 Quiz Complete!\nFinal Score: ${newScore}\n`);
-              setRunDisabled(true);
-              setCompleted(true);
-              return questions.length; // move index past last question
-            }
-            return next;
-          });
-          setRunCooldown(false);
-        }, 1500);
-        return;
+    const maxRetries = 2;
+    let lastError;
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        const res = await api.questions.run(code, qIndex, language);
+        setOutput(res.output || '');
+        if (res.correct && res.points) {
+          const newScore = score + res.points;
+          setScore(newScore);
+          setOutput((o) => o + `\n✅ Correct! +${res.points} points\n`);
+          if (runCooldownRef.current) clearTimeout(runCooldownRef.current);
+          runCooldownRef.current = setTimeout(() => {
+            setQIndex((i) => {
+              const next = i + 1;
+              if (next >= questions.length) {
+                setFinalScore(newScore);
+                setOutput((o) => o + `\n🎉 Quiz Complete!\nFinal Score: ${newScore}\n`);
+                setRunDisabled(true);
+                setCompleted(true);
+                return questions.length; // move index past last question
+              }
+              return next;
+            });
+            setRunCooldown(false);
+          }, 1500);
+          return;
+        }
+        break;
+      } catch (e) {
+        lastError = e;
+        if (e.status === 429 && attempt < maxRetries) {
+          setOutput(`Server busy, retrying in 2s... (${attempt + 1}/${maxRetries})\n`);
+          await new Promise((r) => setTimeout(r, 2000));
+        } else {
+          break;
+        }
       }
-    } catch (e) {
-      setOutput(e.error || 'Request failed');
     }
+    setOutput(lastError?.error || 'Request failed');
     runCooldownRef.current = setTimeout(() => setRunCooldown(false), RUN_COOLDOWN_MS);
   };
 

@@ -2,6 +2,8 @@
 
 Flask API for auth, questions, timer, and admin. Student code runs in an isolated Docker container (runner image).
 
+**Execution limits (inside container):** runtime timeout `TIME_LIMIT_SECONDS=3`; combined stdout+stderr capped at `MAX_OUTPUT_BYTES=10000`.
+
 ## Build runner once (on the droplet)
 
 The app runs submitted code inside the `codeblitz-runner` image. Build that image **once** on the server where the app runs (e.g. Ubuntu 24.04 droplet). You do **not** need to rebuild it on every app deploy.
