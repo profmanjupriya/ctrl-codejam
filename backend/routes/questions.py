@@ -3,6 +3,7 @@ import io
 import os
 import tempfile
 import subprocess
+from threading import Semaphore
 
 from flask import Blueprint, request, jsonify, session
 
@@ -16,26 +17,41 @@ RUN_TIMEOUT_SEC = 10
 DOCKER_BIN = os.environ.get("DOCKER_BIN", "docker")
 RUNNER_IMAGE = os.environ.get("RUNNER_IMAGE", "codeblitz-runner:latest")
 
+# In-container limits: runtime timeout and max combined stdout+stderr size
+TIME_LIMIT_SECONDS = 3
+MAX_OUTPUT_BYTES = 10000
+
+# Concurrency gate: limit simultaneous Docker runs to avoid CPU/memory burst from many submissions.
+MAX_CONCURRENT_RUNS = 4
+RUN_GATE = Semaphore(MAX_CONCURRENT_RUNS)
+# Wait up to this many seconds for a slot before returning 429 (reduces 429s under burst).
+GATE_WAIT_SEC = 5
+
 
 def _run_in_docker(lang: str, code: str) -> str:
     """
     Execute untrusted code inside an isolated Docker container.
+    In-container limits: TIME_LIMIT_SECONDS=3, MAX_OUTPUT_BYTES=10000.
 
     - lang: 'python', 'java', or 'cpp'
     - code: source code string
     """
     with tempfile.TemporaryDirectory() as d:
+        # Timeout and output cap applied inside container; PIPESTATUS preserves timeout exit code (124)
+        _cap = f"2>&1 | head -c {MAX_OUTPUT_BYTES}"
+        _timeout = f"timeout {TIME_LIMIT_SECONDS}s"
+        _exit_code = '; exit ${PIPESTATUS[0]:-$?}'
         if lang == "python":
             src_name = "main.py"
-            inner_cmd = ["python", "main.py"]
+            inner_cmd = ["bash", "-lc", f"{_timeout} python3 /work/main.py {_cap}{_exit_code}"]
         elif lang == "java":
             src_name = "Main.java"
-            # Compile into writable /tmp/run (keep /work read-only), then run
-            inner_cmd = ["sh", "-lc", "mkdir -p /tmp/run && javac -d /tmp/run /work/Main.java && java -cp /tmp/run Main"]
+            # Compile into writable /tmp/run (keep /work read-only), then run with timeout and output cap
+            inner_cmd = ["bash", "-lc", f"mkdir -p /tmp/run && javac -d /tmp/run /work/Main.java && {_timeout} java -cp /tmp/run Main {_cap}{_exit_code}"]
         else:  # cpp
             src_name = "solution.cpp"
-            # Compile into writable /tmp/run (keep /work read-only), then run
-            inner_cmd = ["sh", "-lc", "mkdir -p /tmp/run && g++ /work/solution.cpp -O2 -std=c++17 -o /tmp/run/main && /tmp/run/main"]
+            # Compile into writable /tmp/run (keep /work read-only), then run with timeout and output cap
+            inner_cmd = ["bash", "-lc", f"mkdir -p /tmp/run && g++ /work/solution.cpp -O2 -std=c++17 -o /tmp/run/main && {_timeout} /tmp/run/main {_cap}{_exit_code}"]
 
         src_path = os.path.join(d, src_name)
         with open(src_path, "w", encoding="utf-8") as f:
@@ -74,6 +90,10 @@ def _run_in_docker(lang: str, code: str) -> str:
 
         out = proc.stdout or ""
         err = proc.stderr or ""
+
+        # In-container timeout (timeout command exits 124)
+        if proc.returncode == 124:
+            return f"Error:\nTimeout after {TIME_LIMIT_SECONDS}s"
 
         if proc.returncode != 0:
             err_stripped = err.strip()
@@ -145,34 +165,40 @@ def run_code():
     if language not in ("python", "java", "cpp"):
         return jsonify({"ok": False, "error": "Invalid language. Use python, java, or cpp."}), 400
 
-    if language == "python":
-        output = run_python(code)
-    elif language == "java":
-        output = run_java(code)
-    else:
-        output = run_cpp(code)
-
-    expected = QUESTIONS[question_index]["expected"]
-    correct = output.strip() == expected.strip()
-
-    points = 0
-    if correct and not preview:
-        remaining = get_remaining()
-        if remaining is not None:
-            points = max(10, int((remaining / TIME_PER_QUESTION) * 100))
+    acquired = RUN_GATE.acquire(blocking=True, timeout=GATE_WAIT_SEC)
+    if not acquired:
+        return jsonify({"ok": False, "error": "Server busy. Too many submissions running. Please try again in a few seconds."}), 429
+    try:
+        if language == "python":
+            output = run_python(code)
+        elif language == "java":
+            output = run_java(code)
         else:
-            # Timer suspended: award fixed points per correct answer
-            if get_status().get("suspended"):
-                points = 10
-        if points > 0:
-            user_id = session.get("user_id")
-            if user_id:
-                record_score(user_id, points)
+            output = run_cpp(code)
 
-    return jsonify({
-        "ok": True,
-        "output": output,
-        "correct": correct,
-        "points": points,
-        "preview": preview,
-    })
+        expected = QUESTIONS[question_index]["expected"]
+        correct = output.strip() == expected.strip()
+
+        points = 0
+        if correct and not preview:
+            remaining = get_remaining()
+            if remaining is not None:
+                points = max(10, int((remaining / TIME_PER_QUESTION) * 100))
+            else:
+                # Timer suspended: award fixed points per correct answer
+                if get_status().get("suspended"):
+                    points = 10
+            if points > 0:
+                user_id = session.get("user_id")
+                if user_id:
+                    record_score(user_id, points)
+
+        return jsonify({
+            "ok": True,
+            "output": output,
+            "correct": correct,
+            "points": points,
+            "preview": preview,
+        })
+    finally:
+        RUN_GATE.release()

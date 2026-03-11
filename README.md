@@ -83,31 +83,55 @@ A speed coding competition app: **Flask** backend and **React** (Vite) frontend.
 
 ---
 
-## Deploy backend to droplet (rsync)
+## Deploy backend to droplet (rsync + SSH)
 
-Run **from inside the project directory** (so the source path is `.` or the current folder):
+### 1. Connect to the droplet (Mac Terminal)
+
+From **Mac Terminal**, SSH into the server (use your droplet IP; replace with your key if needed):
 
 ```bash
-cd /path/to/ctrl-codejam
-rsync -av --delete . root@64.23.188.213:/opt/ctrl-codejam/
+ssh root@64.23.188.213
 ```
 
-- Use your real project path (e.g. `~/ctrl-codejam` or `~/Projects/ctrl-codejam`).  
-- **Wrong:** `rsync ... ctrl-codejam/ ...` from your home directory — that looks for a folder named `ctrl-codejam` in `~` and fails with "No such file or directory" if you're not in it.
+You’ll be prompted for the root password (or use an SSH key). Once connected, you’re on the droplet.
 
-On the server after rsync:
+### 2. Sync code from your Mac (run on your Mac)
+
+**On your Mac** (in a terminal, not inside SSH), from the directory that **contains** your project folder (e.g. your repo is at `~/ctrl-codejam`):
+
+```bash
+rsync -av --delete ctrl-codejam/ root@64.23.188.213:/opt/ctrl-codejam
+```
+
+- Run this from the **parent** of `ctrl-codejam` (e.g. `cd ~` then the command above if the folder is `~/ctrl-codejam`).
+- This copies the contents of `ctrl-codejam/` to `/opt/ctrl-codejam` on the droplet.
+
+### 3. On the droplet (inside SSH): build runner and start the app
+
+SSH in (step 1), then run:
+
+**Build the Docker runner image first (once per runner change):**
 
 ```bash
 cd /opt/ctrl-codejam/backend
+chmod +x scripts/build_runner.sh
+./scripts/build_runner.sh
+```
 
-# Build the code-runner Docker image (required for Run; Python/Java/C++ run inside it)
-docker build -t codeblitz-runner:latest -f Dockerfile.runner .
+**Activate Python and run the app:**
 
-python3 -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-# Ensure .env exists (ADMIN_USERNAME, ADMIN_DEFAULT_PASSWORD, CORS_ORIGINS, etc.)
+```bash
+rm -rf venv
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install --upgrade pip setuptools wheel
+python -m pip install -r requirements.txt
 python app.py
 ```
+
+Ensure `backend/.env` exists on the droplet (e.g. `ADMIN_USERNAME`, `ADMIN_DEFAULT_PASSWORD`, `CORS_ORIGINS`). The backend will listen on port 5000. To avoid "Docker is not available" when PATH is minimal, set `DOCKER_BIN=/usr/bin/docker` in `backend/.env` on the droplet.
+
+**Frontend must call the droplet:** In `frontend/.env.local` use `VITE_API_BASE_URL=http://64.23.188.213:5000` so Run requests hit the backend on the server (where Docker and the runner image live). If you use `http://localhost:5000`, the browser will call your local machine and you’ll get "Docker is not available" unless you run the backend locally with Docker.
 
 **"pull access denied" / "Unable to find image codeblitz-runner"** — The image must exist on the **same machine and same Docker** that runs the Flask app. Do this:
 
